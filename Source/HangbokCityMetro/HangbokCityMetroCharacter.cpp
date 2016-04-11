@@ -45,7 +45,6 @@ AHangbokCityMetroCharacter::AHangbokCityMetroCharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 30.0f, 10.0f);
 
-	Ammo = 0;
 	setlocale(LC_ALL, "Korean");
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -109,10 +108,8 @@ wchar_t *L(const char *multiByteString)
 
 void AHangbokCityMetroCharacter::OnFire()
 {
-	printString(L("¾È³ç"));
-	
-	// Ammo°¡ ¾øÀ¸¸é ¾ÈµÊ
-	if (Ammo > 0) {
+#pragma region Shooting Code
+	if (false) {
 		// try and fire a projectile
 		if (ProjectileClass != NULL)
 		{
@@ -146,6 +143,7 @@ void AHangbokCityMetroCharacter::OnFire()
 			}
 		}
 	}
+#pragma endregion
 }
 
 void AHangbokCityMetroCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
