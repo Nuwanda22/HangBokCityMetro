@@ -45,6 +45,8 @@ AHangbokCityMetroCharacter::AHangbokCityMetroCharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 30.0f, 10.0f);
 
+	Ammo = 0;
+
 	setlocale(LC_ALL, "Korean");
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -109,7 +111,19 @@ wchar_t *L(const char *multiByteString)
 void AHangbokCityMetroCharacter::OnFire()
 {
 #pragma region Shooting Code
-	if (false) {
+	// try and play a firing animation if specified
+	if (FireAnimation != NULL)
+	{
+		// Get the animation object for the arms mesh
+		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+		if (AnimInstance != NULL)
+		{
+			AnimInstance->Montage_Play(FireAnimation, 1.f);
+		}
+	}
+
+	// if player doesn't have ammo, player can't fire
+	if (Ammo > 0) {
 		// try and fire a projectile
 		if (ProjectileClass != NULL)
 		{
@@ -132,16 +146,8 @@ void AHangbokCityMetroCharacter::OnFire()
 			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 		}
 
-		// try and play a firing animation if specified
-		if (FireAnimation != NULL)
-		{
-			// Get the animation object for the arms mesh
-			UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-			if (AnimInstance != NULL)
-			{
-				AnimInstance->Montage_Play(FireAnimation, 1.f);
-			}
-		}
+		// decrease ammo
+		Ammo--;
 	}
 #pragma endregion
 }
